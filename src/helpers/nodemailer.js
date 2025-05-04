@@ -3,6 +3,7 @@ const nodemailer = require('nodemailer');
 const enviarPDF = async (req, res) => {
   const { emailDestino } = req.body;
 
+
   if (!req.file || !emailDestino) {
     return res.status(400).json({ error: 'Faltan datos o archivo PDF' });
   }
@@ -32,8 +33,11 @@ const enviarPDF = async (req, res) => {
     await transporter.sendMail(mailOptions);
     res.status(200).json({ mensaje: 'Correo enviado correctamente' });
   } catch (err) {
-    console.error('❌ Error al enviar email:', err);
-    res.status(500).json({ error: 'Error al enviar correo' });
+    console.error('❌ Error al enviar correo:', err);
+    res.status(500).json({
+      error: 'Error al enviar correo',
+      detalle: err.message
+    });
   }
 };
 
